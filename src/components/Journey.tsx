@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { JOURNEY_STEPS } from "@/data/journey";
@@ -62,15 +63,25 @@ export default function Journey() {
           {JOURNEY_STEPS.map((step) => (
             <div
               key={step.n}
-              className="group relative flex h-[26rem] w-[78vw] shrink-0 flex-col justify-between rounded-[2rem] border border-espresso/10 bg-cream/70 p-9 shadow-[0_20px_60px_-30px_rgba(74,51,39,0.3)] sm:w-[42vw] lg:w-[24vw]"
+              className="group relative h-[26rem] w-[78vw] shrink-0 overflow-hidden rounded-[2rem] border border-espresso/10 shadow-[0_20px_60px_-30px_rgba(74,51,39,0.3)] sm:w-[42vw] lg:w-[24vw]"
             >
-              <div className="flex items-start justify-between">
-                <span className="font-serif text-6xl text-honey/30">{step.n}</span>
-                <JourneyIcon kind={step.kind} />
-              </div>
-              <div>
-                <h3 className="font-serif text-2xl text-espresso">{step.title}</h3>
-                <p className="mt-3 font-sans text-sm leading-relaxed text-coffee/70">{step.desc}</p>
+              <Image
+                src={step.image}
+                alt={step.title}
+                fill
+                sizes="(min-width: 1024px) 24vw, (min-width: 640px) 42vw, 78vw"
+                className="object-cover"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/10" />
+              <div className="relative flex h-full flex-col justify-between p-9">
+                <div className="flex items-start justify-between">
+                  <span className="font-serif text-6xl text-cream/60">{step.n}</span>
+                  <JourneyIcon kind={step.kind} />
+                </div>
+                <div>
+                  <h3 className="font-serif text-2xl text-cream">{step.title}</h3>
+                  <p className="mt-3 font-sans text-sm leading-relaxed text-cream/80">{step.desc}</p>
+                </div>
               </div>
             </div>
           ))}
