@@ -39,14 +39,17 @@ export default function Calendar({
     setViewDate(new Date(year, month + delta, 1));
   };
 
+  const isCurrentMonth = year === today.getFullYear() && month === today.getMonth();
+
   return (
     <div className="glass rounded-[1.75rem] p-6">
       <div className="mb-5 flex items-center justify-between">
         <button
           onClick={() => changeMonth(-1)}
-          {...hoverCursor}
+          disabled={isCurrentMonth}
+          {...(!isCurrentMonth ? hoverCursor : {})}
           aria-label="Previous month"
-          className="flex h-8 w-8 items-center justify-center rounded-full text-espresso/60 transition-colors hover:bg-espresso/5"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-espresso/60 transition-colors hover:bg-espresso/5 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
         >
           ←
         </button>

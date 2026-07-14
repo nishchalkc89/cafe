@@ -43,9 +43,19 @@ export default function LoadingScreen() {
   }, []);
 
   useEffect(() => {
+    // Wait for the bean particles to actually be in the DOM before building a
+    // timeline that targets them — otherwise GSAP resolves ".bean-particle"
+    // against zero elements and the exit animation silently does nothing.
+    if (beans.length === 0) return;
+
     const msgInterval = setInterval(() => {
       setMessage((m) => (m + 1) % MESSAGES.length);
     }, 950);
+
+    // Safety net: if the timeline ever stalls (e.g. a backgrounded tab throttles
+    // requestAnimationFrame), force the loading screen to release the page
+    // instead of leaving a full-viewport overlay blocking every click forever.
+    const fallback = setTimeout(finishLoading, 9000);
 
     const tl = respectMotionPreference(gsap.timeline());
 
@@ -113,9 +123,10 @@ export default function LoadingScreen() {
 
     return () => {
       clearInterval(msgInterval);
+      clearTimeout(fallback);
       tl.kill();
     };
-  }, [finishLoading, setLoadProgress]);
+  }, [beans, finishLoading, setLoadProgress]);
 
   return (
     <div

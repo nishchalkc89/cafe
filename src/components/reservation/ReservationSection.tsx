@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { TIME_SLOTS } from "@/data/tables";
+import { TABLES, TIME_SLOTS } from "@/data/tables";
 import { useCursor } from "@/lib/useCursor";
 import Calendar from "./Calendar";
 import SeatingLayout from "./SeatingLayout";
 import Confetti from "./Confetti";
+
+const MAX_PARTY = Math.max(...TABLES.map((t) => t.seats));
 
 export default function ReservationSection() {
   const [date, setDate] = useState<Date | null>(null);
@@ -17,7 +19,15 @@ export default function ReservationSection() {
   const bookCursor = useCursor("book");
   const hoverCursor = useCursor("hover");
 
-  const canConfirm = date && time && table;
+  const selectedTable = TABLES.find((t) => t.id === table) ?? null;
+
+  // A table that no longer fits the party (e.g. the guest count went up) should
+  // be deselected rather than silently allowed through to confirmation.
+  useEffect(() => {
+    if (selectedTable && selectedTable.seats < party) setTable(null);
+  }, [party, selectedTable]);
+
+  const canConfirm = date && time && selectedTable && selectedTable.seats >= party;
 
   const reset = () => {
     setConfirmed(false);
@@ -102,7 +112,7 @@ export default function ReservationSection() {
                       </button>
                       <span className="w-4 text-center font-serif text-lg text-espresso">{party}</span>
                       <button
-                        onClick={() => setParty((p) => Math.min(8, p + 1))}
+                        onClick={() => setParty((p) => Math.min(MAX_PARTY, p + 1))}
                         {...hoverCursor}
                         aria-label="Increase guests"
                         className="flex h-8 w-8 items-center justify-center rounded-full border border-espresso/20 text-espresso"
@@ -115,7 +125,7 @@ export default function ReservationSection() {
               </div>
 
               <div className="flex flex-col gap-6">
-                <SeatingLayout selected={table} onSelect={setTable} />
+                <SeatingLayout selected={table} onSelect={setTable} party={party} />
 
                 <button
                   disabled={!canConfirm}

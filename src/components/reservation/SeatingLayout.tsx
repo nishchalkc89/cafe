@@ -7,9 +7,11 @@ import { useCursor } from "@/lib/useCursor";
 export default function SeatingLayout({
   selected,
   onSelect,
+  party,
 }: {
   selected: string | null;
   onSelect: (id: string) => void;
+  party: number;
 }) {
   const hoverCursor = useCursor("hover");
 
@@ -21,13 +23,17 @@ export default function SeatingLayout({
 
       {TABLES.map((table) => {
         const isSelected = selected === table.id;
+        const tooSmall = table.seats < party;
+        const disabled = table.reserved || tooSmall;
         return (
           <button
             key={table.id}
-            disabled={table.reserved}
+            disabled={disabled}
             onClick={() => onSelect(table.id)}
-            {...(!table.reserved ? hoverCursor : {})}
-            aria-label={`Table ${table.id}, ${table.seats} seats, ${table.reserved ? "reserved" : "available"}`}
+            {...(!disabled ? hoverCursor : {})}
+            aria-label={`Table ${table.id}, ${table.seats} seats, ${
+              table.reserved ? "reserved" : tooSmall ? "too small for party size" : "available"
+            }`}
             aria-pressed={isSelected}
             className="group absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
             style={{ left: `${table.x}%`, top: `${table.y}%` }}
@@ -36,7 +42,7 @@ export default function SeatingLayout({
               animate={
                 isSelected
                   ? { scale: 1.35 }
-                  : table.reserved
+                  : disabled
                   ? { scale: 1 }
                   : { scale: [1, 1.05, 1] }
               }
@@ -47,11 +53,11 @@ export default function SeatingLayout({
               }
               className={`relative flex items-center justify-center text-[10px] font-semibold text-cream shadow-md ${
                 table.shape === "round" ? "rounded-full" : "rounded-lg"
-              }`}
+              } ${tooSmall && !table.reserved ? "opacity-40" : ""}`}
               style={{
                 width: 20 + table.seats * 3.2,
                 height: 20 + table.seats * 3.2,
-                backgroundColor: table.reserved ? "#9C9184" : isSelected ? "#D9A441" : "#3E5240",
+                backgroundColor: disabled ? "#9C9184" : isSelected ? "#D9A441" : "#3E5240",
                 boxShadow: isSelected ? "0 0 0 6px rgba(217,164,65,0.25)" : undefined,
               }}
             >

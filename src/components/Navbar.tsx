@@ -1,17 +1,55 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
+import { AnimatePresence, motion } from "framer-motion";
 import { NAV_LINKS } from "@/data/nav";
+import { MENU_CATEGORIES } from "@/data/menuCategories";
 import { useAppStore } from "@/store/useAppStore";
+import { useProductModal } from "@/store/useProductModal";
 import MagneticButton from "./MagneticButton";
+
+const ALL_MENU_ITEMS = MENU_CATEGORIES.flatMap((c) =>
+  c.items.map((item) => ({ ...item, category: c.label }))
+);
 
 export default function Navbar() {
   const navRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState("");
   const hasEntered = useAppStore((s) => s.hasEntered);
   const setCursorVariant = useAppStore((s) => s.setCursorVariant);
+  const openQuickView = useProductModal((s) => s.open);
   const lastScroll = useRef(0);
+
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return ALL_MENU_ITEMS.filter(
+      (item) =>
+        item.name.toLowerCase().includes(q) ||
+        item.story.toLowerCase().includes(q) ||
+        item.ingredients.some((ing) => ing.toLowerCase().includes(q))
+    ).slice(0, 8);
+  }, [query]);
+
+  useEffect(() => {
+    if (!searchOpen) return;
+    searchInputRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSearchOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [searchOpen]);
+
+  const selectResult = (item: (typeof ALL_MENU_ITEMS)[number]) => {
+    openQuickView(item);
+    setSearchOpen(false);
+    setQuery("");
+  };
 
   useEffect(() => {
     if (!hasEntered) return;
@@ -73,6 +111,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <button
               aria-label="Search"
+              onClick={() => setSearchOpen(true)}
               className="hidden h-9 w-9 items-center justify-center rounded-full text-espresso/70 transition-colors hover:bg-espresso/5 hover:text-espresso sm:flex"
               onMouseEnter={() => setCursorVariant("hover")}
               onMouseLeave={() => setCursorVariant("default")}
@@ -129,6 +168,80 @@ export default function Navbar() {
           </div>
         )}
       </div>
+
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            className="fixed inset-0 z-[1100] flex items-start justify-center p-6 pt-28"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              className="absolute inset-0 bg-warmblack/70 backdrop-blur-md"
+              onClick={() => setSearchOpen(false)}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: -20, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.97 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="glass relative w-full max-w-xl overflow-hidden rounded-[1.75rem] p-3"
+            >
+              <div className="flex items-center gap-3 px-3 py-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="shrink-0 text-espresso/50">
+                  <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.5" />
+                  <path d="M21 21l-4.3-4.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search the menu…"
+                  aria-label="Search the menu"
+                  className="w-full bg-transparent font-sans text-sm text-espresso placeholder:text-espresso/40 focus:outline-none"
+                />
+                <button
+                  onClick={() => setSearchOpen(false)}
+                  aria-label="Close search"
+                  className="shrink-0 rounded-full p-1 text-espresso/50 transition-colors hover:bg-espresso/5 hover:text-espresso"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {query.trim() && (
+                <div className="mt-1 max-h-80 overflow-y-auto border-t border-espresso/10 pt-2">
+                  {results.length === 0 ? (
+                    <p className="px-3 py-4 font-sans text-sm text-coffee/60">
+                      No matches for &ldquo;{query}&rdquo;.
+                    </p>
+                  ) : (
+                    results.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => selectResult(item)}
+                        className="flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-espresso/5"
+                      >
+                        <span>
+                          <span className="block font-serif text-base text-espresso">{item.name}</span>
+                          <span className="block font-sans text-xs uppercase tracking-wide text-coffee/50">
+                            {item.category}
+                          </span>
+                        </span>
+                        <span className="shrink-0 font-serif text-sm text-forest">${item.price.toFixed(2)}</span>
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

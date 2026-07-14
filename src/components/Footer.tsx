@@ -6,9 +6,33 @@ import CoffeeBeans from "@/components/particles/CoffeeBeans";
 import Steam from "@/components/particles/Steam";
 
 const COLUMNS = [
-  { title: "Explore", links: ["About", "Coffee", "Bakery", "Journey"] },
-  { title: "Visit", links: ["Location", "Reservations", "Private Events", "Wholesale"] },
-  { title: "Connect", links: ["Instagram", "Gallery", "Careers", "Contact"] },
+  {
+    title: "Explore",
+    links: [
+      { label: "About", href: "#about" },
+      { label: "Coffee", href: "#menu" },
+      { label: "Bakery", href: "#bakery" },
+      { label: "Journey", href: "#journey" },
+    ],
+  },
+  {
+    title: "Visit",
+    links: [
+      { label: "Location", href: "#location" },
+      { label: "Reservations", href: "#visit" },
+      { label: "Private Events", href: "#" },
+      { label: "Wholesale", href: "#" },
+    ],
+  },
+  {
+    title: "Connect",
+    links: [
+      { label: "Instagram", href: "#" },
+      { label: "Gallery", href: "#gallery" },
+      { label: "Careers", href: "#" },
+      { label: "Contact", href: "#" },
+    ],
+  },
 ];
 
 const SOCIALS = ["IG", "FB", "X"];
@@ -83,13 +107,13 @@ export default function Footer() {
               <div className="font-sans text-xs uppercase tracking-widest text-honey/80">{col.title}</div>
               <ul className="mt-5 space-y-3">
                 {col.links.map((l) => (
-                  <li key={l}>
+                  <li key={l.label}>
                     <a
-                      href="#"
+                      href={l.href}
                       {...hoverCursor}
                       className="font-sans text-sm text-latte/70 transition-colors hover:text-cream"
                     >
-                      {l}
+                      {l.label}
                     </a>
                   </li>
                 ))}
