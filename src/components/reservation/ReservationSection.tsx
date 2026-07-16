@@ -38,7 +38,7 @@ export default function ReservationSection() {
   };
 
   return (
-    <section id="visit" className="relative mx-auto max-w-6xl px-6 py-32 md:px-10 md:py-40">
+    <section id="visit" className="relative mx-auto max-w-6xl px-6 py-20 md:px-10 md:py-28">
       <div className="mx-auto mb-14 max-w-2xl text-center">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

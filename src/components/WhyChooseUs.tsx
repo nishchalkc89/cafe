@@ -6,7 +6,7 @@ import WhyCard from "./WhyCard";
 
 export default function WhyChooseUs() {
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-10 md:py-40">
+    <section className="relative mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
       <div className="mx-auto mb-16 max-w-2xl text-center">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
