@@ -150,23 +150,38 @@ export default function Navbar() {
           </div>
         </nav>
 
-        {menuOpen && (
-          <div className="glass mt-3 rounded-3xl p-6 md:hidden">
-            <ul className="flex flex-col gap-4">
-              {NAV_LINKS.map((l) => (
-                <li key={l.href}>
-                  <a
-                    href={l.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="font-serif text-2xl italic text-espresso"
-                  >
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -12, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: "auto" }}
+              exit={{ opacity: 0, y: -12, height: 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="overflow-hidden md:hidden"
+            >
+              <div className="glass mt-3 rounded-3xl p-6">
+                <ul className="flex flex-col gap-4">
+                  {NAV_LINKS.map((l, i) => (
+                    <motion.li
+                      key={l.href}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: 0.05 + i * 0.05 }}
+                    >
+                      <a
+                        href={l.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="font-serif text-2xl italic text-espresso"
+                      >
+                        {l.label}
+                      </a>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <AnimatePresence>

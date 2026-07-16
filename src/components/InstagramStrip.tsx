@@ -24,15 +24,33 @@ export default function InstagramStrip() {
   return (
     <section className="relative overflow-hidden py-20 md:py-28">
       <div className="mx-auto mb-12 flex max-w-7xl flex-col items-center gap-6 px-6 text-center md:px-10">
-        <div className="eyebrow flex items-center justify-center gap-3 text-coffee/70">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="eyebrow flex items-center justify-center gap-3 text-coffee/70"
+        >
           <span className="h-px w-10 bg-honey" /> Follow Along <span className="h-px w-10 bg-honey" />
-        </div>
-        <h2 className="section-heading font-serif text-4xl leading-tight text-espresso sm:text-5xl">
+        </motion.div>
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.05 }}
+          className="section-heading font-serif text-4xl leading-tight text-espresso sm:text-5xl"
+        >
           Life inside
           <span className="font-serif-italic text-honey-dark"> the roastery.</span>
-        </h2>
+        </motion.h2>
 
-        <div className="glass mt-2 flex items-center gap-4 rounded-full px-5 py-3">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="glass mt-2 flex items-center gap-4 rounded-full px-5 py-3"
+        >
           <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-honey to-coffee font-serif text-cream">
             A
           </div>
@@ -46,7 +64,7 @@ export default function InstagramStrip() {
           >
             Follow
           </button>
-        </div>
+        </motion.div>
       </div>
 
       <div className="mask-fade-edges relative w-full overflow-hidden">

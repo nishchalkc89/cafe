@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { useCursor } from "@/lib/useCursor";
 import CoffeeBeans from "@/components/particles/CoffeeBeans";
 import Steam from "@/components/particles/Steam";
@@ -55,7 +56,13 @@ export default function Footer() {
       <Steam intensity={0.4} wispCount={2} className="left-1/2 top-8 -translate-x-1/2" />
 
       <div className="relative mx-auto max-w-7xl">
-        <div className="mb-16 flex flex-col items-center gap-6 border-b border-cream/10 pb-16 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.7 }}
+          className="mb-16 flex flex-col items-center gap-6 border-b border-cream/10 pb-16 text-center"
+        >
           <div className="font-serif text-4xl italic text-cream sm:text-5xl">Aurora Roast</div>
           <p className="max-w-md font-sans text-sm leading-relaxed text-latte/60">
             The story continues with every cup.
@@ -79,10 +86,15 @@ export default function Footer() {
               {subscribed ? "Subscribed ✓" : "Subscribe"}
             </button>
           </form>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 gap-14 border-b border-cream/10 pb-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="font-sans text-xs uppercase tracking-widest text-honey/80">Aurora Roast</div>
             <p className="mt-4 max-w-xs font-sans text-sm leading-relaxed text-latte/60">
               Small batch coffee, roasted with patience and poured with intention.
@@ -100,10 +112,16 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          {COLUMNS.map((col) => (
-            <div key={col.title}>
+          {COLUMNS.map((col, i) => (
+            <motion.div
+              key={col.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.7, delay: (i + 1) * 0.08, ease: [0.16, 1, 0.3, 1] }}
+            >
               <div className="font-sans text-xs uppercase tracking-widest text-honey/80">{col.title}</div>
               <ul className="mt-5 space-y-3">
                 {col.links.map((l) => (
@@ -118,7 +136,7 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           ))}
         </div>
 
