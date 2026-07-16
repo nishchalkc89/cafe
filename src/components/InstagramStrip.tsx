@@ -22,7 +22,7 @@ export default function InstagramStrip() {
   };
 
   return (
-    <section className="relative overflow-hidden py-32 md:py-40">
+    <section className="relative overflow-hidden py-20 md:py-28">
       <div className="mx-auto mb-12 flex max-w-7xl flex-col items-center gap-6 px-6 text-center md:px-10">
         <div className="eyebrow flex items-center justify-center gap-3 text-coffee/70">
           <span className="h-px w-10 bg-honey" /> Follow Along <span className="h-px w-10 bg-honey" />

@@ -37,7 +37,7 @@ export default function Gallery() {
   const active = activeIndex !== null ? GALLERY_IMAGES[activeIndex] : null;
 
   return (
-    <section id="gallery" className="relative mx-auto max-w-7xl px-6 py-32 md:px-10 md:py-40">
+    <section id="gallery" className="relative mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
       <CoffeeBeans variant="drift" />
 
       <div className="mx-auto mb-16 max-w-2xl text-center">

@@ -9,7 +9,7 @@ export default function Bakery() {
   const setCursorVariant = useAppStore((s) => s.setCursorVariant);
 
   return (
-    <section id="bakery" className="relative mx-auto max-w-7xl px-6 py-32 md:px-10 md:py-40">
+    <section id="bakery" className="relative mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
       <div className="mb-16 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
         <div>
           <motion.div

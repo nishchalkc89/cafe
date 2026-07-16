@@ -5,7 +5,7 @@ import { PROCESS_STEPS } from "@/data/process";
 
 export default function Process() {
   return (
-    <section id="process" className="relative overflow-hidden bg-forest py-32 text-cream md:py-40">
+    <section id="process" className="relative overflow-hidden bg-forest py-20 text-cream md:py-28">
       <div className="pointer-events-none absolute inset-0 opacity-[0.06] bg-grain-noise" />
       <div
         className="pointer-events-none absolute -right-32 top-10 h-[28rem] w-[28rem] rounded-full blur-[100px]"

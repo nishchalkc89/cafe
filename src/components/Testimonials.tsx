@@ -8,7 +8,7 @@ const LOOP = [...TESTIMONIALS, ...TESTIMONIALS];
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="relative overflow-hidden py-32 md:py-40">
+    <section id="testimonials" className="relative overflow-hidden py-20 md:py-28">
       <div className="mx-auto mb-16 max-w-2xl px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

@@ -71,7 +71,7 @@ export default function MenuSection() {
   }, [displayCategory]);
 
   return (
-    <section id="menu" className="relative overflow-hidden px-6 py-32 md:px-10 md:py-40">
+    <section id="menu" className="relative overflow-hidden px-6 py-20 md:px-10 md:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div
           ref={glowRef}

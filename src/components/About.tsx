@@ -74,7 +74,7 @@ export default function About() {
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="relative mx-auto max-w-7xl px-6 py-32 md:px-10 md:py-44">
+    <section id="about" ref={sectionRef} className="relative mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
       <div className="grid grid-cols-1 items-center gap-16 md:grid-cols-2">
         <div className="relative order-2 grid grid-cols-2 gap-4 md:order-1">
           <div ref={maskRef} className="col-span-2 overflow-hidden rounded-[2rem]">
